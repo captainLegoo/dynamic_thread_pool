@@ -12,4 +12,4 @@ thread:
       unit: SECONDS
       work-queue: LinkedBlockingQueue
       work-queue-capacity: 100
-      rejected-execution-handler: AbortPolicy
+      rejected-execution-handler: CallerRunsPolicy
