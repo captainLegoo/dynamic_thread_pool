@@ -1,0 +1,15 @@
+server:
+  port: 9999
+
+thread:
+  pool:
+    config:
+      enabled: true
+      thread-pool-num: 2
+      core-pool-size: 10
+      max-pool-size: 20
+      keep-alive-time: 60
+      unit: SECONDS
+      work-queue: LinkedBlockingQueue
+      work-queue-capacity: 100
+      rejected-execution-handler: AbortPolicy
