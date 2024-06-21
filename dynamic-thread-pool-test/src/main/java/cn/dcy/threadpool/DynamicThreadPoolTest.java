@@ -37,23 +37,23 @@ public class DynamicThreadPoolTest {
     @Bean
     public ApplicationRunner test01(Map<String, ThreadPoolExecutor> threadPoolExecutorMap) {
         return args -> {
-            while (true) {
-                ThreadPoolExecutor executors01 = threadPoolExecutorMap.get("threadPoolExecutor1");
-                for (int i = 0; i < TASK_LIMIT; i++) {
-                    if (!running.get()) break;
-                    submitRandomTask(executors01, "threadPoolExecutor01");
-                    try {
-                        Thread.sleep(new Random().nextInt(50) + 1);
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                    }
+            //while (true) {
+            ThreadPoolExecutor executors01 = threadPoolExecutorMap.get("threadPoolExecutor1");
+            for (int i = 0; i < TASK_LIMIT; i++) {
+                if (!running.get()) break;
+                submitRandomTask(executors01, "threadPoolExecutor01");
+                try {
+                    Thread.sleep(new Random().nextInt(50) + 1);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                 }
-
-                Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                    logger.info("Shutting down...");
-                    running.set(false);
-                }));
             }
+
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                logger.info("Shutting down...");
+                running.set(false);
+            }));
+            //}
         };
     }
 
