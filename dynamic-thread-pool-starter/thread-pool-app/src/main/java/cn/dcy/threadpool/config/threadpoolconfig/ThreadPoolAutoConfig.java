@@ -25,7 +25,7 @@ public class ThreadPoolAutoConfig {
 
     private final Logger logger = LoggerFactory.getLogger(ThreadPoolAutoConfig.class);
 
-    @Bean("threadPoolExecutor")
+    @Bean("threadPoolExecutorMap")
     public Map<String, ThreadPoolExecutor> generateThreadPoolExecutor(ApplicationContext context, ThreadPoolConfigProperties threadPoolConfigProperties) {
         String poolNumStr = context.getEnvironment().getProperty("thread.pool.config.thread-pool-num");
         int threadPoolNum = Integer.parseInt(poolNumStr);
