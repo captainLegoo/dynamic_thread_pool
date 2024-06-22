@@ -17,3 +17,7 @@ thread:
       work-queue: LinkedBlockingQueue
       work-queue-capacity: 100
       rejected-execution-handler: CallerRunsPolicy
+
+logging:
+  level:
+    root: info
