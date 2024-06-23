@@ -34,6 +34,7 @@ public class DynamicThreadPoolAutoConfig {
 
         threadPoolExecutorMap.forEach((threadPoolName, executor) -> {
             ThreadPoolEntity entity = new ThreadPoolEntity();
+            entity.setThreadPoolName(threadPoolName);
             entity.setActiveCount(executor.getActiveCount());
             entity.setCompletedTaskCount(executor.getCompletedTaskCount());
             entity.setCorePoolSize(executor.getCorePoolSize());
@@ -48,8 +49,8 @@ public class DynamicThreadPoolAutoConfig {
     }
 
     @Bean
-    public ThreadPoolService threadPoolService(ApplicationContext context, IThreadPoolRepository threadPoolRepository) {
+    public ThreadPoolService threadPoolService(ApplicationContext context, IThreadPoolRepository threadPoolRepository, Map<String, ThreadPoolExecutor> threadPoolExecutorMap) {
         String appName = context.getEnvironment().getProperty("spring.application.name");
-        return new ThreadPoolService(appName, threadPoolRepository);
+        return new ThreadPoolService(appName, threadPoolRepository, threadPoolExecutorMap);
     }
 }
