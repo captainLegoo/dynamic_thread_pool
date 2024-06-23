@@ -1,11 +1,18 @@
 package cn.dcy.threadpool.domain.service;
 
 import cn.dcy.threadpool.domain.model.entity.ThreadPoolEntity;
+import cn.dcy.threadpool.domain.model.valobj.ThreadPoolVO;
 import cn.dcy.threadpool.domain.repository.IThreadPoolRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Kyle
@@ -20,9 +27,12 @@ public class ThreadPoolService implements IThreadPoolService {
 
     private final IThreadPoolRepository threadPoolRepository;
 
-    public ThreadPoolService(String applicationName, IThreadPoolRepository threadPoolRepository) {
+    private final Map<String, ThreadPoolExecutor> threadPoolExecutorMap;
+
+    public ThreadPoolService(String applicationName, IThreadPoolRepository threadPoolRepository, Map<String, ThreadPoolExecutor> threadPoolExecutorMap) {
         this.applicationName = applicationName;
         this.threadPoolRepository = threadPoolRepository;
+        this.threadPoolExecutorMap = threadPoolExecutorMap;
     }
 
     @Override
@@ -30,20 +40,48 @@ public class ThreadPoolService implements IThreadPoolService {
         if (threadPoolEntity == null || threadPoolEntity.getThreadPoolName() == null) {
             return;
         }
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(
+                threadPoolEntity.getCorePoolSize(),
+                threadPoolEntity.getMaximumPoolSize(),
+                60,
+                TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>(100),
+                new ThreadPoolExecutor.AbortPolicy()
+        );
+
+        threadPoolExecutorMap.put(threadPoolEntity.getThreadPoolName(), executor);
         threadPoolRepository.saveThreadPoolConfig(threadPoolEntity);
     }
 
     @Override
-    public boolean updateThreadConfig(ThreadPoolEntity threadPoolEntity) {
-        if (threadPoolEntity == null || threadPoolEntity.getThreadPoolName() == null) {
-            return false;
-        }
-        return threadPoolRepository.updateThreadConfig(threadPoolEntity);
+    public boolean updateThreadConfigByName(String threadPoolName, int corePoolSize, int maxPoolSize) {
+        if (StringUtils.isBlank(threadPoolName)) return false;
+
+        ThreadPoolExecutor executor = threadPoolExecutorMap.get(threadPoolName);
+        if (executor == null) return false;
+        executor.setCorePoolSize(corePoolSize);
+        executor.setMaximumPoolSize(maxPoolSize);
+        logger.info("Thread pool config updated, thread pool name: {}, core pool size: {}, max pool size: {}", threadPoolName, corePoolSize, maxPoolSize);
+        return true;
     }
 
     @Override
-    public List<ThreadPoolEntity> queryAllThread() {
-        return threadPoolRepository.queryAllThread();
+    public List<ThreadPoolVO> queryAllThread() {
+        List<ThreadPoolEntity> threadPoolEntities = threadPoolRepository.queryAllThread();
+        List<ThreadPoolVO> threadPoolVOList = new ArrayList<>(threadPoolEntities.size());
+        threadPoolEntities.forEach(threadPoolEntity -> {
+            ThreadPoolVO threadPoolVO = new ThreadPoolVO();
+            threadPoolVO.setThreadPoolName(threadPoolEntity.getThreadPoolName());
+            threadPoolVO.setActiveCount(threadPoolEntity.getActiveCount());
+            threadPoolVO.setCompletedTaskCount(threadPoolEntity.getCompletedTaskCount());
+            threadPoolVO.setCorePoolSize(threadPoolEntity.getCorePoolSize());
+            threadPoolVO.setMaximumPoolSize(threadPoolEntity.getMaximumPoolSize());
+            threadPoolVO.setQueueSize(threadPoolEntity.getQueueSize());
+            threadPoolVO.setTaskCount(threadPoolEntity.getTaskCount());
+            threadPoolVO.setTerminated(threadPoolEntity.isTerminated());
+            threadPoolVOList.add(threadPoolVO);
+        });
+        return threadPoolVOList;
     }
 
     @Override
