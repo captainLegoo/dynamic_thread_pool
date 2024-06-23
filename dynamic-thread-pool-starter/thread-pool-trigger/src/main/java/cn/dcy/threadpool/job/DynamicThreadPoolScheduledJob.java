@@ -1,8 +1,7 @@
 package cn.dcy.threadpool.job;
 
 import cn.dcy.threadpool.domain.model.entity.ThreadPoolEntity;
-import cn.dcy.threadpool.domain.service.IThreadPoolService;
-import com.alibaba.fastjson2.JSON;
+import cn.dcy.threadpool.domain.repository.IThreadPoolRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -22,11 +21,11 @@ public class DynamicThreadPoolScheduledJob {
 
     private final Map<String, ThreadPoolExecutor> threadPoolExecutorMap;
 
-    private final IThreadPoolService threadPoolService;
+    private final IThreadPoolRepository threadPoolRepository;
 
-    public DynamicThreadPoolScheduledJob(Map<String, ThreadPoolExecutor> threadPoolExecutorMap, IThreadPoolService threadPoolService) {
+    public DynamicThreadPoolScheduledJob(Map<String, ThreadPoolExecutor> threadPoolExecutorMap, IThreadPoolRepository threadPoolRepository) {
         this.threadPoolExecutorMap = threadPoolExecutorMap;
-        this.threadPoolService = threadPoolService;
+        this.threadPoolRepository = threadPoolRepository;
     }
 
     /**
@@ -35,13 +34,12 @@ public class DynamicThreadPoolScheduledJob {
     @Scheduled(cron = "*/5 * * * * ?")
     public void scheduledUpdateThreadPoolEntityCache() {
         threadPoolExecutorMap.forEach((threadPoolName, executor) -> {
-            ThreadPoolEntity threadPoolEntity = threadPoolService.queryThreadByName(threadPoolName);
+            ThreadPoolEntity threadPoolEntity = threadPoolRepository.queryThreadByName(threadPoolName);
             if (threadPoolEntity != null) {
                 updateEntityCache(executor, threadPoolEntity);
-                threadPoolService.updateThreadConfig(threadPoolEntity);
+                threadPoolRepository.updateThreadConfig(threadPoolEntity);
             }
         });
-        logger.debug("Update ThreadPoolEntity Cache: {}", JSON.toJSONString(threadPoolExecutorMap));
     }
 
     /**
