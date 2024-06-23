@@ -8,12 +8,11 @@ package cn.dcy.threadpool.domain.model.valobj;
 public class ThreadPoolVO {
     private String threadPoolName;
     private int activeCount;
-    private int completedTaskCount;
+    private long completedTaskCount;
     private int corePoolSize;
     private int maximumPoolSize;
-    private int poolSize;
     private int queueSize;
-    private int taskCount;
+    private long taskCount;
     private boolean terminated;
 
     public String getThreadPoolName() {
@@ -32,11 +31,11 @@ public class ThreadPoolVO {
         this.activeCount = activeCount;
     }
 
-    public int getCompletedTaskCount() {
+    public long getCompletedTaskCount() {
         return completedTaskCount;
     }
 
-    public void setCompletedTaskCount(int completedTaskCount) {
+    public void setCompletedTaskCount(long completedTaskCount) {
         this.completedTaskCount = completedTaskCount;
     }
 
@@ -56,14 +55,6 @@ public class ThreadPoolVO {
         this.maximumPoolSize = maximumPoolSize;
     }
 
-    public int getPoolSize() {
-        return poolSize;
-    }
-
-    public void setPoolSize(int poolSize) {
-        this.poolSize = poolSize;
-    }
-
     public int getQueueSize() {
         return queueSize;
     }
@@ -72,11 +63,11 @@ public class ThreadPoolVO {
         this.queueSize = queueSize;
     }
 
-    public int getTaskCount() {
+    public long getTaskCount() {
         return taskCount;
     }
 
-    public void setTaskCount(int taskCount) {
+    public void setTaskCount(long taskCount) {
         this.taskCount = taskCount;
     }
 
