@@ -26,7 +26,7 @@ public class DynamicThreadPoolTest {
 
     private final Logger logger = LoggerFactory.getLogger(DynamicThreadPoolTest.class);
 
-    private static final int TASK_LIMIT = 100;
+    private static final int TASK_LIMIT = 999999;
     private final AtomicBoolean running = new AtomicBoolean(true);
 
     /**
@@ -65,9 +65,7 @@ public class DynamicThreadPoolTest {
         executor.submit(() -> {
             try {
                 TimeUnit.SECONDS.sleep(initialDelay);
-                logger.info("Task started after {} seconds in executor {}", initialDelay, executorName);
                 TimeUnit.SECONDS.sleep(sleepTime);
-                logger.info("Task executed for {} seconds in executor {}", sleepTime, executorName);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             } catch (Exception e) {
