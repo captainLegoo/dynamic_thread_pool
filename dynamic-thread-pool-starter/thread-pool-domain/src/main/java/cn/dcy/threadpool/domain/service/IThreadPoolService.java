@@ -1,5 +1,6 @@
 package cn.dcy.threadpool.domain.service;
 
+import cn.dcy.threadpool.domain.model.dto.ThreadPoolDTO;
 import cn.dcy.threadpool.domain.model.entity.ThreadPoolEntity;
 import cn.dcy.threadpool.domain.model.valobj.ThreadPoolVO;
 
@@ -20,12 +21,10 @@ public interface IThreadPoolService {
 
     /**
      * update thread pool config
-     * @param threadPoolName thread pool name
-     * @param corePoolSize core pool size
-     * @param maxPoolSize  max pool size
+     * @param threadPoolDTO
      * @return
      */
-    boolean updateThreadConfigByName(String threadPoolName, int corePoolSize, int maxPoolSize);
+    boolean updateThreadConfigByName(ThreadPoolDTO threadPoolDTO);
 
     /**
      * query all thread pool

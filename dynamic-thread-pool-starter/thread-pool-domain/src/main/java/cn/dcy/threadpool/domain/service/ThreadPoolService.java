@@ -1,5 +1,6 @@
 package cn.dcy.threadpool.domain.service;
 
+import cn.dcy.threadpool.domain.model.dto.ThreadPoolDTO;
 import cn.dcy.threadpool.domain.model.entity.ThreadPoolEntity;
 import cn.dcy.threadpool.domain.model.valobj.ThreadPoolVO;
 import cn.dcy.threadpool.domain.repository.IThreadPoolRepository;
@@ -54,7 +55,11 @@ public class ThreadPoolService implements IThreadPoolService {
     }
 
     @Override
-    public boolean updateThreadConfigByName(String threadPoolName, int corePoolSize, int maxPoolSize) {
+    public boolean updateThreadConfigByName(ThreadPoolDTO threadPoolDTO) {
+        String threadPoolName = threadPoolDTO.getThreadPoolName();
+        int corePoolSize = threadPoolDTO.getCorePoolSize();
+        int maxPoolSize = threadPoolDTO.getMaxPoolSize();
+
         if (StringUtils.isBlank(threadPoolName)) return false;
 
         ThreadPoolExecutor executor = threadPoolExecutorMap.get(threadPoolName);
