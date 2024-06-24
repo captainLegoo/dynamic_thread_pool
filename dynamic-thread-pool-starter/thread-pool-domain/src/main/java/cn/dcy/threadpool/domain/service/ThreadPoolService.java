@@ -60,6 +60,8 @@ public class ThreadPoolService implements IThreadPoolService {
         int corePoolSize = threadPoolDTO.getCorePoolSize();
         int maxPoolSize = threadPoolDTO.getMaxPoolSize();
 
+        if (corePoolSize <= 0 || maxPoolSize <= 0 || corePoolSize > maxPoolSize) return false;
+
         if (StringUtils.isBlank(threadPoolName)) return false;
 
         ThreadPoolExecutor executor = threadPoolExecutorMap.get(threadPoolName);
