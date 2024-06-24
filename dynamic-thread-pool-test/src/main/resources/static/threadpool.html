@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>ThreadPool</title>
+  <style>
+    .root {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .update-panel-container * {
+      margin: 15px;
+    }
+
+    .update-thread-pool-select {
+      width: 200px;
+      height: 30px;
+      border: 1px solid #bcb8b8;
+      text-align: center;
+      font-size: 15px;
+    }
+
+    .update-thread-pool-button {
+      padding: 5px 10px;
+      font-weight: bolder;
+    }
+
+    .update-panel-container input {
+      width: 130px;
+      border: 1px solid #474444;
+      padding: 5px 10px;
+      font-size: 15px;
+    }
+
+    .refresh-panel-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .refresh-panel-container button {
+      padding: 5px 10px;
+      font-weight: bolder;
+      margin: 20px;
+    }
+
+    .thread-pool-data-panel {
+      max-width: 2000px;
+      margin: 0 auto;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+    }
+
+    .thread-pool-data-table {
+      margin-bottom: 20px;
+    }
+
+    th,
+    td {
+      text-align: center;
+      padding: 8px;
+      border: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f4f4f4;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="root">
+    <div class="title">
+      <h2>Dynamic Thread Pool Panel</h2>
+    </div>
+
+    <div class="update-panel-container">
+      <select name="" class="update-thread-pool-select js-update-thread-pool-select">
+      </select>
+      <input class="js-update-thread-pool-core-size-input" type="number" placeholder="core pool size" />
+      <input class="js-update-thread-pool-max-size-input" type="number" placeholder="max pool size" />
+      <button class="update-thread-pool-button js-update-thread-pool-button">Sumbit</button>
+    </div>
+
+    <div class="refresh-panel-container">
+      <button class="refresh-button js-refresh-button">Refresh</button>
+      <button class="auto-refresh-button js-auto-refresh-button">Auto-Refresh</button>
+    </div>
+
+    <div class="thread-pool-data-panel js-thread-pool-data-panel">
+    </div>
+  </div>
+
+  <script>
+    class threadPoolEntity {
+      threadPoolName;
+      activeCount;
+      completedTaskCount;
+      corePoolSize;
+      maximumPoolSize;
+      queueSize;
+      taskCount;
+      terminated;
+      constructor(threadPoolData) {
+        this.threadPoolName = threadPoolData.threadPoolName;
+        this.activeCount = threadPoolData.activeCount;
+        this.completedTaskCount = threadPoolData.completedTaskCount;
+        this.corePoolSize = threadPoolData.corePoolSize;
+        this.maximumPoolSize = threadPoolData.maximumPoolSize;
+        this.queueSize = threadPoolData.queueSize;
+        this.taskCount = threadPoolData.taskCount;
+        this.terminated = threadPoolData.terminated;
+      }
+    }
+
+    renderAllThreadPoolData();
+    initButton();
+    initUpdateButtonAndSelect();
+
+    function initUpdateButtonAndSelect() {
+      const updateButton = document.querySelector('.js-update-thread-pool-button');
+
+      updateButton.addEventListener('click', () => {
+        const threadPoolSelect = document.querySelector('.js-update-thread-pool-select');
+
+        const threadPoolName = threadPoolSelect.value;
+        const corePoolSize = document.querySelector('.js-update-thread-pool-core-size-input').value;
+        const maxPoolSize = document.querySelector('.js-update-thread-pool-max-size-input').value;
+
+        fetchUpdateThreadPoolData(threadPoolName, corePoolSize, maxPoolSize);
+
+        document.querySelector('.js-update-thread-pool-core-size-input').value = '';
+
+        document.querySelector('.js-update-thread-pool-max-size-input').value = '';
+      });
+    }
+
+    /**
+     * Init button
+     */
+    function initButton() {
+
+      const refreshButton = document.querySelector('.js-refresh-button');
+
+      const autoRefreshButton = document.querySelector('.js-auto-refresh-button');
+
+      refreshButton.addEventListener('click', () => renderAllThreadPoolData());
+
+      let isAutoRefresh = false;
+      let autoRefreshInterval;
+
+      autoRefreshButton.addEventListener('click', () => {
+        if (isAutoRefresh) {
+          clearInterval(autoRefreshInterval);
+          autoRefreshButton.textContent = 'Auto-Refresh';
+        } else {
+          autoRefreshInterval = setInterval(() => {
+            renderAllThreadPoolData();
+          }, 3000);
+          autoRefreshButton.textContent = 'Cancel Auto-Refresh';
+        }
+        isAutoRefresh = !isAutoRefresh;
+
+      });
+    }
+
+    /**
+     *  Render all thread pool data
+     */
+    async function renderAllThreadPoolData() {
+      const threadPoolList = await fetchAllThreadPoolData();
+
+      let updateSelectOptionHTML = '';
+      let threadpoolDataTableHTML = '';
+
+      threadPoolList.map(threadPool => {
+
+        updateSelectOptionHTML += `
+      <option value="${threadPool.threadPoolName}">${threadPool.threadPoolName}</option>
+    `;
+
+        threadpoolDataTableHTML += `
+      <table class="thread-pool-data-table">
+        <tr>
+          <th>Thread Pool Name</th>
+          <th>Active Count</th>
+          <th>Completed Task Count</th>
+          <th>Queue Size</th>
+          <th>Task Count</th>
+          <th>Core Pool Size</th>
+          <th>Maximum Pool Size</th>
+          <th>Terminated</th>
+        </tr>
+        <tr>
+          <td>${threadPool.threadPoolName}</td>
+          <td>${threadPool.activeCount}</td>
+          <td>${threadPool.completedTaskCount}</td>
+          <td>${threadPool.queueSize}</td>
+          <td>${threadPool.taskCount}</td>
+          <td><b>${threadPool.corePoolSize}</b></td>
+          <td><b>${threadPool.maximumPoolSize}</b></td>
+          <td>${threadPool.terminated}</td>
+        </tr>
+    `;
+      });
+
+      document.querySelector('.js-thread-pool-data-panel').innerHTML = threadpoolDataTableHTML;
+
+      document.querySelector('.js-update-thread-pool-select').innerHTML = updateSelectOptionHTML;
+    }
+
+
+    /**
+     * Fetch all thread pool data
+     * @returns thread pool list
+     */
+    async function fetchAllThreadPoolData() {
+      const URL = 'http://localhost:9999/queryAllThreadPoolConfig';
+
+      try {
+        const response = await fetch(URL);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const threadPoolResponse = await response.json();
+        const data = threadPoolResponse.data;
+
+        const threadPoolList = data.map(threadInfo => new threadPoolEntity(threadInfo));
+
+        return threadPoolList.sort((a, b) => a.threadPoolName.localeCompare(b.threadPoolName));
+      } catch (error) {
+        console.error('Error fetching thread pool data:', error);
+      }
+    }
+
+    /**
+     * Update thread pool
+     */
+    async function fetchUpdateThreadPoolData(threadPoolName, corePoolSize, maxPoolSize) {
+      try {
+        const response = await fetch('http://localhost:9999/updateThreadPoolConfig', {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json'
+          },
+          body: JSON.stringify({
+            threadPoolName: threadPoolName,
+            corePoolSize: corePoolSize,
+            maxPoolSize: maxPoolSize
+          })
+        });
+
+        const isUpdate = await response.json();
+        alert(`Update ${threadPoolName} ${isUpdate.data ? 'Successfully' : 'Failed'}`);
+      } catch (error) {
+        console.log('Unexpected error. Try again later.');
+      }
+    }
+  </script>
+</body>
+
+</html>
