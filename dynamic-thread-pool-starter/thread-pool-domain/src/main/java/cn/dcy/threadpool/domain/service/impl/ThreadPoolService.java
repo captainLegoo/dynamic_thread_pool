@@ -66,8 +66,16 @@ public class ThreadPoolService implements IThreadPoolService {
 
         ThreadPoolExecutor executor = threadPoolExecutorMap.get(threadPoolName);
         if (executor == null) return false;
-        executor.setCorePoolSize(corePoolSize);
-        executor.setMaximumPoolSize(maxPoolSize);
+
+        synchronized (executor) {
+            int activeCount = executor.getActiveCount();
+            if (corePoolSize < activeCount) {
+                logger.error("Cannot set core pool size {} lower than active thread count {}", corePoolSize, activeCount);
+                throw new IllegalArgumentException("Core pool size cannot be less than the active thread count");
+            }
+            executor.setMaximumPoolSize(maxPoolSize);
+            executor.setCorePoolSize(corePoolSize);
+        }
         logger.info("Thread pool config updated, thread pool name: {}, core pool size: {}, max pool size: {}", threadPoolName, corePoolSize, maxPoolSize);
         return true;
     }
