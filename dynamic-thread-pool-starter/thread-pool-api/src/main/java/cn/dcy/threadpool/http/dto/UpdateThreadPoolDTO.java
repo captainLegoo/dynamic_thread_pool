@@ -1,11 +1,11 @@
-package cn.dcy.threadpool.domain.model.dto;
+package cn.dcy.threadpool.http.dto;
 
 /**
  * @author Kyle
  * @date 2024/06/24
- * @description Thread Pool DTO
+ * @description update thread pool dTO
  */
-public class ThreadPoolDTO {
+public class UpdateThreadPoolDTO {
     private String threadPoolName;
     private int corePoolSize;
     private int maxPoolSize;

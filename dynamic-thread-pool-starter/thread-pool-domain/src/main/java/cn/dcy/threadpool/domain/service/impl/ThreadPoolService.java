@@ -1,9 +1,9 @@
-package cn.dcy.threadpool.domain.service;
+package cn.dcy.threadpool.domain.service.impl;
 
-import cn.dcy.threadpool.domain.model.dto.ThreadPoolDTO;
+import cn.dcy.threadpool.domain.model.entity.ThreadPoolDataInfo;
 import cn.dcy.threadpool.domain.model.entity.ThreadPoolEntity;
-import cn.dcy.threadpool.domain.model.valobj.ThreadPoolVO;
 import cn.dcy.threadpool.domain.repository.IThreadPoolRepository;
+import cn.dcy.threadpool.domain.service.IThreadPoolService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,10 +55,10 @@ public class ThreadPoolService implements IThreadPoolService {
     }
 
     @Override
-    public boolean updateThreadConfigByName(ThreadPoolDTO threadPoolDTO) {
-        String threadPoolName = threadPoolDTO.getThreadPoolName();
-        int corePoolSize = threadPoolDTO.getCorePoolSize();
-        int maxPoolSize = threadPoolDTO.getMaxPoolSize();
+    public boolean updateThreadConfigByName(ThreadPoolEntity threadPoolEntity) {
+        String threadPoolName = threadPoolEntity.getThreadPoolName();
+        int corePoolSize = threadPoolEntity.getCorePoolSize();
+        int maxPoolSize = threadPoolEntity.getMaximumPoolSize();
 
         if (corePoolSize <= 0 || maxPoolSize <= 0 || corePoolSize > maxPoolSize) return false;
 
@@ -73,20 +73,20 @@ public class ThreadPoolService implements IThreadPoolService {
     }
 
     @Override
-    public List<ThreadPoolVO> queryAllThread() {
+    public List<ThreadPoolDataInfo> queryAllThread() {
         List<ThreadPoolEntity> threadPoolEntities = threadPoolRepository.queryAllThread();
-        List<ThreadPoolVO> threadPoolVOList = new ArrayList<>(threadPoolEntities.size());
+        List<ThreadPoolDataInfo> threadPoolVOList = new ArrayList<>(threadPoolEntities.size());
         threadPoolEntities.forEach(threadPoolEntity -> {
-            ThreadPoolVO threadPoolVO = new ThreadPoolVO();
-            threadPoolVO.setThreadPoolName(threadPoolEntity.getThreadPoolName());
-            threadPoolVO.setActiveCount(threadPoolEntity.getActiveCount());
-            threadPoolVO.setCompletedTaskCount(threadPoolEntity.getCompletedTaskCount());
-            threadPoolVO.setCorePoolSize(threadPoolEntity.getCorePoolSize());
-            threadPoolVO.setMaximumPoolSize(threadPoolEntity.getMaximumPoolSize());
-            threadPoolVO.setQueueSize(threadPoolEntity.getQueueSize());
-            threadPoolVO.setTaskCount(threadPoolEntity.getTaskCount());
-            threadPoolVO.setTerminated(threadPoolEntity.isTerminated());
-            threadPoolVOList.add(threadPoolVO);
+            ThreadPoolDataInfo threadPoolDataInfo = new ThreadPoolDataInfo();
+            threadPoolDataInfo.setThreadPoolName(threadPoolEntity.getThreadPoolName());
+            threadPoolDataInfo.setActiveCount(threadPoolEntity.getActiveCount());
+            threadPoolDataInfo.setCompletedTaskCount(threadPoolEntity.getCompletedTaskCount());
+            threadPoolDataInfo.setCorePoolSize(threadPoolEntity.getCorePoolSize());
+            threadPoolDataInfo.setMaximumPoolSize(threadPoolEntity.getMaximumPoolSize());
+            threadPoolDataInfo.setQueueSize(threadPoolEntity.getQueueSize());
+            threadPoolDataInfo.setTaskCount(threadPoolEntity.getTaskCount());
+            threadPoolDataInfo.setTerminated(threadPoolEntity.isTerminated());
+            threadPoolVOList.add(threadPoolDataInfo);
         });
         return threadPoolVOList;
     }

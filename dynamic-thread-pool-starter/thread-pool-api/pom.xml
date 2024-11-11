@@ -3,37 +3,24 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>cn.dcy.threadpool</groupId>
         <artifactId>dynamic-thread-pool-starter</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>thread-pool-trigger</artifactId>
-
-    <packaging>jar</packaging>
+    <artifactId>thread-pool-api</artifactId>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>cn.dcy.threadpool</groupId>
-            <artifactId>thread-pool-domain</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.dcy.threadpool</groupId>
             <artifactId>thread-pool-types</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.dcy.threadpool</groupId>
-            <artifactId>thread-pool-api</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

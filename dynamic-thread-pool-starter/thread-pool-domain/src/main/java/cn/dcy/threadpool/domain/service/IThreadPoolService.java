@@ -1,8 +1,7 @@
 package cn.dcy.threadpool.domain.service;
 
-import cn.dcy.threadpool.domain.model.dto.ThreadPoolDTO;
+import cn.dcy.threadpool.domain.model.entity.ThreadPoolDataInfo;
 import cn.dcy.threadpool.domain.model.entity.ThreadPoolEntity;
-import cn.dcy.threadpool.domain.model.valobj.ThreadPoolVO;
 
 import java.util.List;
 
@@ -21,16 +20,16 @@ public interface IThreadPoolService {
 
     /**
      * update thread pool config
-     * @param threadPoolDTO
+     * @param threadPoolEntity
      * @return
      */
-    boolean updateThreadConfigByName(ThreadPoolDTO threadPoolDTO);
+    boolean updateThreadConfigByName(ThreadPoolEntity threadPoolEntity);
 
     /**
      * query all thread pool
      * @return
      */
-    List<ThreadPoolVO> queryAllThread();
+    List<ThreadPoolDataInfo> queryAllThread();
 
     /**
      * query thread pool by name

@@ -1,11 +1,11 @@
-package cn.dcy.threadpool.domain.model.valobj;
+package cn.dcy.threadpool.domain.model.entity;
 
 /**
  * @author Kyle
  * @date 2024/06/17
  * @description Thread Pool VO
  */
-public class ThreadPoolVO {
+public class ThreadPoolDataInfo {
     private String threadPoolName;
     private int activeCount;
     private long completedTaskCount;
