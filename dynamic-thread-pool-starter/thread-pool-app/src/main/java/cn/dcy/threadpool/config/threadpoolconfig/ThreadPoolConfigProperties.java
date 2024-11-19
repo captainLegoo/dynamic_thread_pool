@@ -10,34 +10,22 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "thread.pool.config", ignoreInvalidFields = true)
 public class ThreadPoolConfigProperties {
 
-    /**
-     * enabled
-     */
+    /** enabled */
     private boolean enabled = false;
 
-    /**
-     * thread pool num
-     */
+    /** thread pool num */
     private int threadPoolNum = 1;
 
-    /**
-     * core pool size
-     */
+    /** core pool size */
     private int corePoolSize = 8;
 
-    /**
-     * maximum pool size
-     */
+    /** maximum pool size */
     private int maxPoolSize = 16;
 
-    /**
-     * keep Alive Time
-     */
+    /** keep Alive Time */
     private long keepAliveTime = 60;
 
-    /**
-     * unit
-     */
+    /** unit */
     private String unit = "SECONDS";
 
     /**
