@@ -6,6 +6,7 @@ import cn.dcy.threadpool.http.dto.UpdateThreadPoolDTO;
 import cn.dcy.threadpool.domain.model.entity.ThreadPoolEntity;
 import cn.dcy.threadpool.domain.service.IThreadPoolService;
 import cn.dcy.threadpool.response.Response;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin(origins = "*")
-public class DynamicThreadPoolController implements IDynamicThreadPool{
+public class DynamicThreadPoolController implements IDynamicThreadPool {
     private final Logger log = LoggerFactory.getLogger(DynamicThreadPoolController.class);
 
     @Resource
@@ -59,5 +60,14 @@ public class DynamicThreadPoolController implements IDynamicThreadPool{
             threadPoolInfoDTOList.add(threadPoolInfoDTO);
         }
         return new Response<>(threadPoolInfoDTOList);
+    }
+
+    @RequestMapping(value = "clearThreadPoolTaskQueueByName", method = RequestMethod.DELETE)
+    @Override
+    public Response<Boolean> clearThreadPoolTaskQueueByName(@RequestParam String threadPoolName) {
+        log.info("Receive thread pool task queue clear request, thread pool name: {}", threadPoolName);
+        if (StringUtils.isBlank(threadPoolName)) return new Response<>(false);
+        boolean status = threadPoolService.clearThreadPoolTaskQueueByName(threadPoolName);
+        return new Response<>(status);
     }
 }

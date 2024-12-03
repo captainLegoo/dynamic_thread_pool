@@ -17,4 +17,11 @@ public interface IDynamicThreadPool {
 
     Response<List<ThreadPoolInfoDTO>> queryAllThreadPoolConfig();
 
+    /**
+     * clear all tasks in thread pool queue
+     * @param threadPoolName thread pool name
+     * @return true if success or false
+     */
+    Response<Boolean> clearThreadPoolTaskQueueByName(String threadPoolName);
+
 }

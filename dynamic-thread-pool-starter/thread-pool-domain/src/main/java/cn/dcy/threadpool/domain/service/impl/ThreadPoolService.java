@@ -106,4 +106,16 @@ public class ThreadPoolService implements IThreadPoolService {
         }
         return threadPoolRepository.queryThreadByName(threadName);
     }
+
+    @Override
+    public boolean clearThreadPoolTaskQueueByName(String threadPoolName) {
+        ThreadPoolExecutor threadPoolExecutor = threadPoolExecutorMap.get(threadPoolName);
+        if (threadPoolExecutor == null) return false;
+
+        synchronized (threadPoolExecutor) {
+            threadPoolExecutor.getQueue().clear();
+        }
+
+        return true;
+    }
 }

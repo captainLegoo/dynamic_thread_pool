@@ -37,4 +37,11 @@ public interface IThreadPoolService {
      * @return
      */
     ThreadPoolEntity queryThreadByName(String threadName);
+
+    /**
+     * clear all tasks in thread pool queue
+     * @param threadPoolName thread pool name
+     * @return true/false
+     */
+    boolean clearThreadPoolTaskQueueByName(String threadPoolName);
 }
