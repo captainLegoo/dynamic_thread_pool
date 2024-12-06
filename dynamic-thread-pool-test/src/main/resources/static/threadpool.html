@@ -228,7 +228,7 @@
      * @returns thread pool list
      */
     async function fetchAllThreadPoolData() {
-      const URL = 'http://localhost:9999/queryAllThreadPoolConfig';
+      const URL = 'http://localhost:9999/api/v1/dynamic-thread-pool/queryAllThreadPoolConfig';
 
       try {
         const response = await fetch(URL);
@@ -253,7 +253,7 @@
      */
     async function fetchUpdateThreadPoolData(threadPoolName, corePoolSize, maxPoolSize) {
       try {
-        const response = await fetch('http://localhost:9999/updateThreadPoolConfig', {
+        const response = await fetch('http://localhost:9999/api/v1/dynamic-thread-pool/updateThreadPoolConfig', {
           method: 'POST',
           headers: {
             'Content-type': 'application/json'
