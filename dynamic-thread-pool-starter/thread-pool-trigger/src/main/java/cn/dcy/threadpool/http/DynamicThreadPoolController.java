@@ -22,13 +22,14 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin(origins = "*")
+@RequestMapping("/api/${app.config.api-version}/dynamic-thread-pool")
 public class DynamicThreadPoolController implements IDynamicThreadPool {
     private final Logger log = LoggerFactory.getLogger(DynamicThreadPoolController.class);
 
     @Resource
     private IThreadPoolService threadPoolService;
 
-    @PostMapping("/updateThreadPoolConfig")
+    @RequestMapping(value = "updateThreadPoolConfig", method = RequestMethod.POST)
     @Override
     public Response<Boolean> updateThreadPoolConfig(@RequestBody UpdateThreadPoolDTO updateThreadPoolDTO) {
         log.info("Receive thread pool config update request, thread pool name: {}, core pool size: {}, max pool size: {}", updateThreadPoolDTO.getThreadPoolName(), updateThreadPoolDTO.getCorePoolSize(), updateThreadPoolDTO.getMaxPoolSize());
