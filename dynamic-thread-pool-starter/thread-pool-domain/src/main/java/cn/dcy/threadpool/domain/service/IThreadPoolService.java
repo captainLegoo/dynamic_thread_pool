@@ -44,4 +44,11 @@ public interface IThreadPoolService {
      * @return true/false
      */
     boolean clearThreadPoolTaskQueueByName(String threadPoolName);
+
+    /**
+     * shutdown thread pool
+     * @param threadPoolName thread pool name
+     * @return true/false
+     */
+    boolean shutdownThreadPoolByName(String threadPoolName);
 }

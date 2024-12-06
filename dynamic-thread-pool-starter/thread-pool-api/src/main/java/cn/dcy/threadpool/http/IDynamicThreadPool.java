@@ -1,6 +1,7 @@
 package cn.dcy.threadpool.http;
 
 import cn.dcy.threadpool.http.dto.ThreadPoolInfoDTO;
+import cn.dcy.threadpool.http.dto.ThreadPoolRequestDTO;
 import cn.dcy.threadpool.http.dto.UpdateThreadPoolDTO;
 import cn.dcy.threadpool.response.Response;
 
@@ -23,5 +24,12 @@ public interface IDynamicThreadPool {
      * @return true if success or false
      */
     Response<Boolean> clearThreadPoolTaskQueueByName(String threadPoolName);
+
+    /**
+     * shutdown thread pool by name
+     * @param threadPoolRequestDTO thread pool request dto
+     * @return true if success or false
+     */
+    Response<Boolean> shutdownThreadPoolByName(ThreadPoolRequestDTO threadPoolRequestDTO);
 
 }

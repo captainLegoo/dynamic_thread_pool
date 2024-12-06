@@ -2,6 +2,7 @@ package cn.dcy.threadpool.http;
 
 import cn.dcy.threadpool.domain.model.entity.ThreadPoolDataInfo;
 import cn.dcy.threadpool.http.dto.ThreadPoolInfoDTO;
+import cn.dcy.threadpool.http.dto.ThreadPoolRequestDTO;
 import cn.dcy.threadpool.http.dto.UpdateThreadPoolDTO;
 import cn.dcy.threadpool.domain.model.entity.ThreadPoolEntity;
 import cn.dcy.threadpool.domain.service.IThreadPoolService;
@@ -69,6 +70,16 @@ public class DynamicThreadPoolController implements IDynamicThreadPool {
         log.info("Receive thread pool task queue clear request, thread pool name: {}", threadPoolName);
         if (StringUtils.isBlank(threadPoolName)) return new Response<>(false);
         boolean status = threadPoolService.clearThreadPoolTaskQueueByName(threadPoolName);
+        return new Response<>(status);
+    }
+
+    @RequestMapping(value = "shutdownThreadPoolByName", method = RequestMethod.POST)
+    @Override
+    public Response<Boolean> shutdownThreadPoolByName(@RequestBody ThreadPoolRequestDTO threadPoolRequestDTO) {
+        String threadPoolName = threadPoolRequestDTO.getThreadPoolName();
+        log.info("Receive thread pool shutdown request, thread pool name: {}", threadPoolName);
+        boolean status = threadPoolService.shutdownThreadPoolByName(threadPoolName);
+        log.info("Thread pool shutdown result: {}", status);
         return new Response<>(status);
     }
 }

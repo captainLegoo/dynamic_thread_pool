@@ -118,4 +118,31 @@ public class ThreadPoolService implements IThreadPoolService {
 
         return true;
     }
+
+    @Override
+    public boolean shutdownThreadPoolByName(String threadPoolName) {
+        ThreadPoolExecutor threadPoolExecutor = threadPoolExecutorMap.get(threadPoolName);
+        if (threadPoolExecutor == null) {
+            logger.warn("Thread pool not found: {}", threadPoolName);
+            return false;
+        }
+
+        try {
+            threadPoolExecutor.shutdown();
+            if (!threadPoolExecutor.awaitTermination(60, TimeUnit.SECONDS)) {
+                logger.warn("Thread pool termination timed out, forcing shutdown: {}", threadPoolName);
+                threadPoolExecutor.shutdownNow();
+            }
+
+            if (!threadPoolExecutor.isTerminated()) {
+                logger.warn("Thread pool not fully terminated: {}", threadPoolName);
+                return false;
+            }
+        } catch (Exception e) {
+            logger.error("Thread pool shutdown failed, thread pool name: {}", threadPoolName, e);
+            return false;
+        }
+
+        return true;
+    }
 }
