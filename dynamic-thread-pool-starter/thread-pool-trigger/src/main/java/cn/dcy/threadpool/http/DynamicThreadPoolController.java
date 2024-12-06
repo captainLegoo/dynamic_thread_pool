@@ -23,7 +23,7 @@ import java.util.List;
  * @description Dynamic ThreadPool visualization
  */
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin("${app.config.cross-origin}")
 @RequestMapping("/api/${app.config.api-version}/dynamic-thread-pool")
 public class DynamicThreadPoolController implements IDynamicThreadPool {
     private final Logger log = LoggerFactory.getLogger(DynamicThreadPoolController.class);
