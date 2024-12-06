@@ -7,6 +7,7 @@ import cn.dcy.threadpool.http.dto.UpdateThreadPoolDTO;
 import cn.dcy.threadpool.domain.model.entity.ThreadPoolEntity;
 import cn.dcy.threadpool.domain.service.IThreadPoolService;
 import cn.dcy.threadpool.response.Response;
+import com.alibaba.fastjson2.JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,21 +34,21 @@ public class DynamicThreadPoolController implements IDynamicThreadPool {
     @RequestMapping(value = "updateThreadPoolConfig", method = RequestMethod.POST)
     @Override
     public Response<Boolean> updateThreadPoolConfig(@RequestBody UpdateThreadPoolDTO updateThreadPoolDTO) {
-        log.info("Receive thread pool config update request, thread pool name: {}, core pool size: {}, max pool size: {}", updateThreadPoolDTO.getThreadPoolName(), updateThreadPoolDTO.getCorePoolSize(), updateThreadPoolDTO.getMaxPoolSize());
+        log.info("[Http] Receive thread pool config update request, thread pool name: {}, core pool size: {}, max pool size: {}", updateThreadPoolDTO.getThreadPoolName(), updateThreadPoolDTO.getCorePoolSize(), updateThreadPoolDTO.getMaxPoolSize());
         ThreadPoolEntity threadPoolEntity = new ThreadPoolEntity();
         threadPoolEntity.setThreadPoolName(updateThreadPoolDTO.getThreadPoolName());
         threadPoolEntity.setCorePoolSize(updateThreadPoolDTO.getCorePoolSize());
         threadPoolEntity.setMaximumPoolSize(updateThreadPoolDTO.getMaxPoolSize());
 
         boolean isUpdate = threadPoolService.updateThreadConfigByName(threadPoolEntity);
-        log.info("Thread pool config update result: {}, thread pool name: {}, core pool size: {}, max pool size: {}", isUpdate, updateThreadPoolDTO.getThreadPoolName(), updateThreadPoolDTO.getCorePoolSize(), updateThreadPoolDTO.getMaxPoolSize());
+        log.info("[Http] Thread pool config update result: {}, thread pool name: {}, core pool size: {}, max pool size: {}", isUpdate, updateThreadPoolDTO.getThreadPoolName(), updateThreadPoolDTO.getCorePoolSize(), updateThreadPoolDTO.getMaxPoolSize());
         return new Response<>(isUpdate);
     }
 
     @RequestMapping(value = "queryAllThreadPoolConfig", method = RequestMethod.GET)
     @Override
     public Response<List<ThreadPoolInfoDTO>> queryAllThreadPoolConfig() {
-        log.info("Receive thread pool config query request");
+        log.info("[Http] Receive thread pool config query request");
         List<ThreadPoolDataInfo> threadPoolDataInfos = threadPoolService.queryAllThread();
         List<ThreadPoolInfoDTO> threadPoolInfoDTOList = new ArrayList<>(threadPoolDataInfos.size());
         for (ThreadPoolDataInfo threadPoolDataInfo : threadPoolDataInfos) {
@@ -59,15 +60,17 @@ public class DynamicThreadPoolController implements IDynamicThreadPool {
             threadPoolInfoDTO.setMaximumPoolSize(threadPoolDataInfo.getMaximumPoolSize());
             threadPoolInfoDTO.setQueueSize(threadPoolDataInfo.getQueueSize());
             threadPoolInfoDTO.setTaskCount(threadPoolDataInfo.getTaskCount());
+            threadPoolInfoDTO.setTerminated(threadPoolDataInfo.isTerminated());
             threadPoolInfoDTOList.add(threadPoolInfoDTO);
         }
+        log.info("[Http] Thread pool config query success");
         return new Response<>(threadPoolInfoDTOList);
     }
 
     @RequestMapping(value = "clearThreadPoolTaskQueueByName", method = RequestMethod.DELETE)
     @Override
     public Response<Boolean> clearThreadPoolTaskQueueByName(@RequestParam String threadPoolName) {
-        log.info("Receive thread pool task queue clear request, thread pool name: {}", threadPoolName);
+        log.info("[Http] Receive thread pool task queue clear request, thread pool name: {}", threadPoolName);
         if (StringUtils.isBlank(threadPoolName)) return new Response<>(false);
         boolean status = threadPoolService.clearThreadPoolTaskQueueByName(threadPoolName);
         return new Response<>(status);
@@ -77,9 +80,9 @@ public class DynamicThreadPoolController implements IDynamicThreadPool {
     @Override
     public Response<Boolean> shutdownThreadPoolByName(@RequestBody ThreadPoolRequestDTO threadPoolRequestDTO) {
         String threadPoolName = threadPoolRequestDTO.getThreadPoolName();
-        log.info("Receive thread pool shutdown request, thread pool name: {}", threadPoolName);
+        log.info("[Http] Receive thread pool shutdown request, thread pool name: {}", threadPoolName);
         boolean status = threadPoolService.shutdownThreadPoolByName(threadPoolName);
-        log.info("Thread pool shutdown result: {}", status);
+        log.info("[Http] Thread pool shutdown result: {}", status);
         return new Response<>(status);
     }
 }
