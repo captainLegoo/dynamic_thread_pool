@@ -3,7 +3,7 @@ package cn.dcy.threadpool.api;
 import cn.dcy.threadpool.api.dto.ThreadPoolInfoDTO;
 import cn.dcy.threadpool.api.dto.ThreadPoolRequestDTO;
 import cn.dcy.threadpool.api.dto.UpdateThreadPoolDTO;
-import cn.dcy.threadpool.response.Response;
+import cn.dcy.threadpool.api.response.Response;
 
 import java.util.List;
 

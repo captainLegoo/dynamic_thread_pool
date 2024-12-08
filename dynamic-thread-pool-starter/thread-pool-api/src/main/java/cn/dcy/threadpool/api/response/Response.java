@@ -14,36 +14,46 @@ public class Response<T> implements Serializable {
     private String message;
     private T data;
 
-    public Response() {
-    }
-
-    public Response(String code, String message, T data) {
-        this.code = code;
-        this.message = message;
-        this.data = data;
+    private Response(Builder<T> builder) {
+        this.code = builder.code;
+        this.message = builder.message;
+        this.data = builder.data;
     }
 
     public String getCode() {
         return code;
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public String getMessage() {
         return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public T getData() {
         return data;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public static class Builder<T> {
+        private String code;
+        private String message;
+        private T data;
+
+        public Builder<T> code(String code) {
+            this.code = code;
+            return this;
+        }
+
+        public Builder<T> message(String message) {
+            this.message = message;
+            return this;
+        }
+
+        public Builder<T> data(T data) {
+            this.data = data;
+            return this;
+        }
+
+        public Response<T> build() {
+            return new Response<>(this);
+        }
     }
 }

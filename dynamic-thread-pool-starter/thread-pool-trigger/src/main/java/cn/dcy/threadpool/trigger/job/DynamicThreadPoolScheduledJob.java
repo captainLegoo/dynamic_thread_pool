@@ -1,4 +1,4 @@
-package cn.dcy.threadpool.job;
+package cn.dcy.threadpool.trigger.job;
 
 import cn.dcy.threadpool.domain.model.entity.ThreadPoolEntity;
 import cn.dcy.threadpool.domain.repository.IThreadPoolRepository;

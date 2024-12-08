@@ -1,13 +1,14 @@
-package cn.dcy.threadpool.http;
+package cn.dcy.threadpool.trigger.http;
 
 import cn.dcy.threadpool.api.IDynamicThreadPool;
+import cn.dcy.threadpool.api.response.Response;
 import cn.dcy.threadpool.domain.model.entity.ThreadPoolDataInfo;
 import cn.dcy.threadpool.api.dto.ThreadPoolInfoDTO;
 import cn.dcy.threadpool.api.dto.ThreadPoolRequestDTO;
 import cn.dcy.threadpool.api.dto.UpdateThreadPoolDTO;
 import cn.dcy.threadpool.domain.model.entity.ThreadPoolEntity;
 import cn.dcy.threadpool.domain.service.IThreadPoolService;
-import cn.dcy.threadpool.response.Response;
+import cn.dcy.threadpool.types.common.Constants;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +43,11 @@ public class DynamicThreadPoolController implements IDynamicThreadPool {
 
         boolean isUpdate = threadPoolService.updateThreadConfigByName(threadPoolEntity);
         log.info("[Http] Thread pool config update result: {}, thread pool name: {}, core pool size: {}, max pool size: {}", isUpdate, updateThreadPoolDTO.getThreadPoolName(), updateThreadPoolDTO.getCorePoolSize(), updateThreadPoolDTO.getMaxPoolSize());
-        return new Response<>(isUpdate);
+        return new Response.Builder<Boolean>()
+                .code(Constants.ResponseCode.SUCCESS.getCode())
+                .message(Constants.ResponseCode.SUCCESS.getInfo())
+                .data(isUpdate)
+                .build();
     }
 
     @RequestMapping(value = "queryAllThreadPoolConfig", method = RequestMethod.GET)
@@ -64,16 +69,28 @@ public class DynamicThreadPoolController implements IDynamicThreadPool {
             threadPoolInfoDTOList.add(threadPoolInfoDTO);
         }
         log.info("[Http] Thread pool config query success");
-        return new Response<>(threadPoolInfoDTOList);
+        return new Response.Builder<List<ThreadPoolInfoDTO>>()
+                .code(Constants.ResponseCode.SUCCESS.getCode())
+                .message(Constants.ResponseCode.SUCCESS.getInfo())
+                .data(threadPoolInfoDTOList)
+                .build();
     }
 
     @RequestMapping(value = "clearThreadPoolTaskQueueByName", method = RequestMethod.DELETE)
     @Override
     public Response<Boolean> clearThreadPoolTaskQueueByName(@RequestParam String threadPoolName) {
         log.info("[Http] Receive thread pool task queue clear request, thread pool name: {}", threadPoolName);
-        if (StringUtils.isBlank(threadPoolName)) return new Response<>(false);
+        if (StringUtils.isBlank(threadPoolName))
+            return new Response.Builder<Boolean>()
+                    .code(Constants.ResponseCode.UN_ERROR.getCode())
+                    .message(Constants.ResponseCode.UN_ERROR.getInfo())
+                    .build();
         boolean status = threadPoolService.clearThreadPoolTaskQueueByName(threadPoolName);
-        return new Response<>(status);
+        return new Response.Builder<Boolean>()
+                .code(Constants.ResponseCode.SUCCESS.getCode())
+                .message(Constants.ResponseCode.SUCCESS.getInfo())
+                .data(status)
+                .build();
     }
 
     @RequestMapping(value = "shutdownThreadPoolByName", method = RequestMethod.POST)
@@ -83,6 +100,10 @@ public class DynamicThreadPoolController implements IDynamicThreadPool {
         log.info("[Http] Receive thread pool shutdown request, thread pool name: {}", threadPoolName);
         boolean status = threadPoolService.shutdownThreadPoolByName(threadPoolName);
         log.info("[Http] Thread pool shutdown result: {}", status);
-        return new Response<>(status);
+        return new Response.Builder<Boolean>()
+                .code(Constants.ResponseCode.SUCCESS.getCode())
+                .message(Constants.ResponseCode.SUCCESS.getInfo())
+                .data(status)
+                .build();
     }
 }
