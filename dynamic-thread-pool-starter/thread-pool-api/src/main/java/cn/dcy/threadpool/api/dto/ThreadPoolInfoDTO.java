@@ -1,4 +1,4 @@
-package cn.dcy.threadpool.http.dto;
+package cn.dcy.threadpool.api.dto;
 
 /**
  * @author Kyle

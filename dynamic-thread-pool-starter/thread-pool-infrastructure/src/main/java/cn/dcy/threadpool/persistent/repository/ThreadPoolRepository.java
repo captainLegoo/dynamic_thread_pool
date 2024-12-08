@@ -54,7 +54,7 @@ public class ThreadPoolRepository implements IThreadPoolRepository {
             entity.setCorePoolSize(threadPoolEntity.getCorePoolSize());
             entity.setMaximumPoolSize(threadPoolEntity.getMaximumPoolSize());
             threadPoolCache.put(entity.getThreadPoolName(), entity);
-            logger.debug("ThreadPoolName:{}, updateThreadConfig: {}", entity.getThreadPoolName(), JSON.toJSONString(entity));
+            logger.info("ThreadPoolName:{}, updateThreadConfig: {}", entity.getThreadPoolName(), JSON.toJSONString(entity));
             return true;
         }
         return false;

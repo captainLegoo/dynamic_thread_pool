@@ -33,11 +33,12 @@ public class DynamicThreadPoolScheduledJob {
      */
     @Scheduled(cron = "*/5 * * * * ?")
     public void scheduledUpdateThreadPoolEntityCache() {
+        logger.info("[Schedule] Scheduled job for updating Thread Pool info");
         threadPoolExecutorMap.forEach((threadPoolName, executor) -> {
             ThreadPoolEntity threadPoolEntity = threadPoolRepository.queryThreadByName(threadPoolName);
             if (threadPoolEntity != null) {
                 updateEntityCache(executor, threadPoolEntity);
-                threadPoolRepository.updateThreadConfig(threadPoolEntity);
+                //threadPoolRepository.updateThreadConfig(threadPoolEntity);
             }
         });
     }

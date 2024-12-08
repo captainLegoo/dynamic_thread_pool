@@ -1,13 +1,13 @@
 package cn.dcy.threadpool.http;
 
+import cn.dcy.threadpool.api.IDynamicThreadPool;
 import cn.dcy.threadpool.domain.model.entity.ThreadPoolDataInfo;
-import cn.dcy.threadpool.http.dto.ThreadPoolInfoDTO;
-import cn.dcy.threadpool.http.dto.ThreadPoolRequestDTO;
-import cn.dcy.threadpool.http.dto.UpdateThreadPoolDTO;
+import cn.dcy.threadpool.api.dto.ThreadPoolInfoDTO;
+import cn.dcy.threadpool.api.dto.ThreadPoolRequestDTO;
+import cn.dcy.threadpool.api.dto.UpdateThreadPoolDTO;
 import cn.dcy.threadpool.domain.model.entity.ThreadPoolEntity;
 import cn.dcy.threadpool.domain.service.IThreadPoolService;
 import cn.dcy.threadpool.response.Response;
-import com.alibaba.fastjson2.JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
