@@ -1,4 +1,4 @@
-package cn.dcy.threadpool.utils;
+package cn.dcy.threadpool.types.utils;
 
 import java.util.concurrent.*;
 

@@ -1,6 +1,6 @@
 package cn.dcy.threadpool.config.threadpoolconfig;
 
-import cn.dcy.threadpool.utils.ThreadPoolUtil;
+import cn.dcy.threadpool.types.utils.ThreadPoolUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
