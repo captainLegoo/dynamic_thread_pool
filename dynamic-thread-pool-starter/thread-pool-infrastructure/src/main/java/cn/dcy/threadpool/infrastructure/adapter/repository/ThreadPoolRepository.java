@@ -1,4 +1,4 @@
-package cn.dcy.threadpool.persistent.repository;
+package cn.dcy.threadpool.infrastructure.adapter.repository;
 
 import cn.dcy.threadpool.domain.model.entity.ThreadPoolEntity;
 import cn.dcy.threadpool.domain.repository.IThreadPoolRepository;
