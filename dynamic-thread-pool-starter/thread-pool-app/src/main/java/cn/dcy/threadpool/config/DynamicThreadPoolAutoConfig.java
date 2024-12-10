@@ -1,7 +1,7 @@
 package cn.dcy.threadpool.config;
 
 import cn.dcy.threadpool.domain.model.entity.ThreadPoolEntity;
-import cn.dcy.threadpool.domain.repository.IThreadPoolRepository;
+import cn.dcy.threadpool.domain.adapter.repository.IThreadPoolRepository;
 import cn.dcy.threadpool.domain.service.impl.ThreadPoolService;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;

@@ -2,7 +2,7 @@ package cn.dcy.threadpool.domain.service.impl;
 
 import cn.dcy.threadpool.domain.model.entity.ThreadPoolDataInfo;
 import cn.dcy.threadpool.domain.model.entity.ThreadPoolEntity;
-import cn.dcy.threadpool.domain.repository.IThreadPoolRepository;
+import cn.dcy.threadpool.domain.adapter.repository.IThreadPoolRepository;
 import cn.dcy.threadpool.domain.service.IThreadPoolService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

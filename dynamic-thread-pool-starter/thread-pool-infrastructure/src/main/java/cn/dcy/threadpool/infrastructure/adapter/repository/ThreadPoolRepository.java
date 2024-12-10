@@ -1,7 +1,7 @@
 package cn.dcy.threadpool.infrastructure.adapter.repository;
 
 import cn.dcy.threadpool.domain.model.entity.ThreadPoolEntity;
-import cn.dcy.threadpool.domain.repository.IThreadPoolRepository;
+import cn.dcy.threadpool.domain.adapter.repository.IThreadPoolRepository;
 import com.alibaba.fastjson2.JSON;
 import com.google.common.cache.Cache;
 import org.slf4j.Logger;

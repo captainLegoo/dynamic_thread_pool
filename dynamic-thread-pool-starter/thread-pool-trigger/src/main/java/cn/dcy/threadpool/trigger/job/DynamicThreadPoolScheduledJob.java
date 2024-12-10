@@ -1,7 +1,7 @@
 package cn.dcy.threadpool.trigger.job;
 
 import cn.dcy.threadpool.domain.model.entity.ThreadPoolEntity;
-import cn.dcy.threadpool.domain.repository.IThreadPoolRepository;
+import cn.dcy.threadpool.domain.adapter.repository.IThreadPoolRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
