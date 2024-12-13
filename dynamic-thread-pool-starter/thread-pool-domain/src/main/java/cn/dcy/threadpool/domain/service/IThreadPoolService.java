@@ -1,6 +1,5 @@
 package cn.dcy.threadpool.domain.service;
 
-import cn.dcy.threadpool.domain.model.entity.ThreadPoolDataInfo;
 import cn.dcy.threadpool.domain.model.entity.ThreadPoolEntity;
 
 import java.util.List;
@@ -29,7 +28,7 @@ public interface IThreadPoolService {
      * query all thread pool
      * @return
      */
-    List<ThreadPoolDataInfo> queryAllThread();
+    List<ThreadPoolEntity> queryAllThread();
 
     /**
      * query thread pool by name

@@ -2,13 +2,11 @@ package cn.dcy.threadpool.trigger.http;
 
 import cn.dcy.threadpool.api.IDynamicThreadPool;
 import cn.dcy.threadpool.api.response.Response;
-import cn.dcy.threadpool.domain.model.entity.ThreadPoolDataInfo;
 import cn.dcy.threadpool.api.dto.ThreadPoolInfoDTO;
 import cn.dcy.threadpool.api.dto.ThreadPoolRequestDTO;
 import cn.dcy.threadpool.api.dto.UpdateThreadPoolDTO;
 import cn.dcy.threadpool.domain.model.entity.ThreadPoolEntity;
 import cn.dcy.threadpool.domain.service.IThreadPoolService;
-import cn.dcy.threadpool.types.common.Constants;
 import cn.dcy.threadpool.types.enums.ResponseCode;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -55,18 +53,18 @@ public class DynamicThreadPoolController implements IDynamicThreadPool {
     @Override
     public Response<List<ThreadPoolInfoDTO>> queryAllThreadPoolConfig() {
         log.info("[Http] Receive thread pool config query request");
-        List<ThreadPoolDataInfo> threadPoolDataInfos = threadPoolService.queryAllThread();
+        List<ThreadPoolEntity> threadPoolDataInfos = threadPoolService.queryAllThread();
         List<ThreadPoolInfoDTO> threadPoolInfoDTOList = new ArrayList<>(threadPoolDataInfos.size());
-        for (ThreadPoolDataInfo threadPoolDataInfo : threadPoolDataInfos) {
+        for (ThreadPoolEntity threadPoolEntity : threadPoolDataInfos) {
             ThreadPoolInfoDTO threadPoolInfoDTO = new ThreadPoolInfoDTO();
-            threadPoolInfoDTO.setThreadPoolName(threadPoolDataInfo.getThreadPoolName());
-            threadPoolInfoDTO.setActiveCount(threadPoolDataInfo.getActiveCount());
-            threadPoolInfoDTO.setCompletedTaskCount(threadPoolDataInfo.getCompletedTaskCount());
-            threadPoolInfoDTO.setCorePoolSize(threadPoolDataInfo.getCorePoolSize());
-            threadPoolInfoDTO.setMaximumPoolSize(threadPoolDataInfo.getMaximumPoolSize());
-            threadPoolInfoDTO.setQueueSize(threadPoolDataInfo.getQueueSize());
-            threadPoolInfoDTO.setTaskCount(threadPoolDataInfo.getTaskCount());
-            threadPoolInfoDTO.setTerminated(threadPoolDataInfo.isTerminated());
+            threadPoolInfoDTO.setThreadPoolName(threadPoolEntity.getThreadPoolName());
+            threadPoolInfoDTO.setActiveCount(threadPoolEntity.getActiveCount());
+            threadPoolInfoDTO.setCompletedTaskCount(threadPoolEntity.getCompletedTaskCount());
+            threadPoolInfoDTO.setCorePoolSize(threadPoolEntity.getCorePoolSize());
+            threadPoolInfoDTO.setMaximumPoolSize(threadPoolEntity.getMaximumPoolSize());
+            threadPoolInfoDTO.setQueueSize(threadPoolEntity.getQueueSize());
+            threadPoolInfoDTO.setTaskCount(threadPoolEntity.getTaskCount());
+            threadPoolInfoDTO.setTerminated(threadPoolEntity.isTerminated());
             threadPoolInfoDTOList.add(threadPoolInfoDTO);
         }
         log.info("[Http] Thread pool config query success");

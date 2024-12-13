@@ -1,14 +1,12 @@
 package cn.dcy.threadpool.domain.service.impl;
 
-import cn.dcy.threadpool.domain.model.entity.ThreadPoolDataInfo;
-import cn.dcy.threadpool.domain.model.entity.ThreadPoolEntity;
 import cn.dcy.threadpool.domain.adapter.repository.IThreadPoolRepository;
+import cn.dcy.threadpool.domain.model.entity.ThreadPoolEntity;
 import cn.dcy.threadpool.domain.service.IThreadPoolService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -81,22 +79,9 @@ public class ThreadPoolService implements IThreadPoolService {
     }
 
     @Override
-    public List<ThreadPoolDataInfo> queryAllThread() {
+    public List<ThreadPoolEntity> queryAllThread() {
         List<ThreadPoolEntity> threadPoolEntities = threadPoolRepository.queryAllThread();
-        List<ThreadPoolDataInfo> threadPoolVOList = new ArrayList<>(threadPoolEntities.size());
-        threadPoolEntities.forEach(threadPoolEntity -> {
-            ThreadPoolDataInfo threadPoolDataInfo = new ThreadPoolDataInfo();
-            threadPoolDataInfo.setThreadPoolName(threadPoolEntity.getThreadPoolName());
-            threadPoolDataInfo.setActiveCount(threadPoolEntity.getActiveCount());
-            threadPoolDataInfo.setCompletedTaskCount(threadPoolEntity.getCompletedTaskCount());
-            threadPoolDataInfo.setCorePoolSize(threadPoolEntity.getCorePoolSize());
-            threadPoolDataInfo.setMaximumPoolSize(threadPoolEntity.getMaximumPoolSize());
-            threadPoolDataInfo.setQueueSize(threadPoolEntity.getQueueSize());
-            threadPoolDataInfo.setTaskCount(threadPoolEntity.getTaskCount());
-            threadPoolDataInfo.setTerminated(threadPoolEntity.isTerminated());
-            threadPoolVOList.add(threadPoolDataInfo);
-        });
-        return threadPoolVOList;
+        return threadPoolEntities;
     }
 
     @Override
