@@ -1,0 +1,43 @@
+name: Publish to GitHub Packages
+
+on:
+  push:
+    paths:
+      - "dynamic-thread-pool-starter/**"
+    branches:
+      - main
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 检出代码
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 设置 Java 环境
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '8' # 使用 Java 8
+          distribution: 'temurin'
+
+      # 缓存 Maven 依赖
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # 编译项目并打包
+      - name: Build with Maven
+        run: mvn -f dynamic-thread-pool-starter/pom.xml clean package
+
+      # 发布到 GitHub Packages
+      - name: Publish to GitHub Packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: mvn -f dynamic-thread-pool-starter/pom.xml deploy

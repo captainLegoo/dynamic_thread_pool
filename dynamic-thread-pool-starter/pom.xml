@@ -10,6 +10,13 @@
         <version>1.0</version>
     </parent>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/captainLegoo/dynamic_thread_pool</url>
+        </repository>
+    </distributionManagement>
+
     <artifactId>dynamic-thread-pool-starter</artifactId>
 
     <packaging>pom</packaging>
