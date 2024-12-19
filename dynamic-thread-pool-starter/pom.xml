@@ -17,6 +17,7 @@
         </repository>
     </distributionManagement>
 
+    <groupId>cn.dcy.threadpool</groupId>
     <artifactId>dynamic-thread-pool-starter</artifactId>
 
     <packaging>pom</packaging>
