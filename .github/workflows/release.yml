@@ -5,7 +5,7 @@ on:
     paths:
       - "dynamic-thread-pool-starter/**"
     branches:
-      - main
+      - master
 
 jobs:
   build-and-publish:
