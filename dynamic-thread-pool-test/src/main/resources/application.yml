@@ -15,7 +15,7 @@ thread:
       keep-alive-time: 60
       unit: SECONDS
       work-queue: LinkedBlockingQueue
-      work-queue-capacity: 100
+      work-queue-capacity: 1000
       rejected-execution-handler: CallerRunsPolicy
 
 logging:
