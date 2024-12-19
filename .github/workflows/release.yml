@@ -33,8 +33,11 @@ jobs:
             ${{ runner.os }}-maven-
 
       # 编译项目并打包
-      - name: Build with Maven
-        run: mvn -f dynamic-thread-pool-starter/pom.xml clean package
+      - name: Build Parent Module
+        run: mvn install -f dynamic-thread-pool-starter/pom.xml
+
+      - name: Build All Modules
+        run: mvn clean install -f pom.xml
 
       # 发布到 GitHub Packages
       - name: Publish to GitHub Packages
